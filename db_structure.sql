@@ -120,7 +120,7 @@ BEGIN
 
   SET var_InstanciasCorrelativas = JSON_ARRAY();
 
-  SELECT JSON_ARRAYAGG(correlativas.PK_Correlativa_InstanciaCorrelativa) INTO var_InstanciasCorrelativas
+  SELECT COALESCE(JSON_ARRAYAGG(correlativas.PK_Correlativa_InstanciaCorrelativa), JSON_ARRAY())  INTO var_InstanciasCorrelativas
   FROM gestion_carrera_universitaria.tblcorrelativa AS correlativas
   WHERE correlativas.PK_Correlativa_Instancia = param_InstanciaId;
 
@@ -136,10 +136,12 @@ DELIMITER ;
 */
 DELIMITER $$
 CREATE DEFINER=CURRENT_USER PROCEDURE `PROCEDURE_PERFIL_CREAR`(
-	IN param_Nombre varchar(64)
+	IN param_Nombre varchar(64),
+  OUT outparam_NewId int UNSIGNED
 )
 BEGIN
 	INSERT INTO `gestion_carrera_universitaria`.`tblperfil` (UQ_Perfil_Nombre) VALUES (param_Nombre);
+  SET outparam_NewId = LAST_INSERT_ID();
 END;
 $$
 DELIMITER ;
@@ -174,10 +176,12 @@ CREATE DEFINER=CURRENT_USER PROCEDURE `PROCEDURE_CARRERA_CREAR`(
 	IN param_CuposVerano int UNSIGNED,
 	IN param_CuposNormal int UNSIGNED,
 	IN param_CuposSoloEnB int UNSIGNED,
-	IN param_CuposIngresante int UNSIGNED
+	IN param_CuposIngresante int UNSIGNED,
+  OUT outparam_NewId int UNSIGNED
 )
 BEGIN
 	INSERT INTO `gestion_carrera_universitaria`.`tblcarrera` (UQ_Carrera_Nombre, DF_Carrera_Modalidad, DF_Carrera_CreditosElectivas, DF_Carrera_CuposVerano, DF_Carrera_CuposNormal, DF_Carrera_CuposSoloEnB, DF_Carrera_CuposIngresantes) VALUES (param_Nombre, param_modalidad, param_creditosElectiva, param_cuposVerano, param_cuposNormal, param_cuposSoloEnB, param_cuposIngresante);
+  SET outparam_NewId = LAST_INSERT_ID();
 END;
 $$
 DELIMITER ;
@@ -211,6 +215,28 @@ $$
 DELIMITER ;
 
 DELIMITER $$
+CREATE DEFINER=CURRENT_USER PROCEDURE `PROCEDURE_CARRERA_OBTENER`(
+  IN param_CarreraId int UNSIGNED
+)
+BEGIN
+  SELECT
+    gestion_carrera_universitaria.tblcarrera.PK_Carrera_Id AS carreraId, 
+    gestion_carrera_universitaria.tblcarrera.UQ_Carrera_Nombre AS carreraNombre,
+    gestion_carrera_universitaria.tblcarrera.DF_Carrera_Modalidad AS carreraModalidad,
+    gestion_carrera_universitaria.tblcarrera.DF_Carrera_CreditosElectivas AS carreraCreditosElectivas,
+    gestion_carrera_universitaria.tblcarrera.DF_Carrera_CuposVerano AS carreraCuposVerano,
+    gestion_carrera_universitaria.tblcarrera.DF_Carrera_CuposNormal AS carreraCuposNormal,
+    gestion_carrera_universitaria.tblcarrera.DF_Carrera_CuposSoloEnB AS carreraCuposSoloEnB,
+    gestion_carrera_universitaria.tblcarrera.DF_Carrera_CuposIngresantes AS carrerasCuposIngresantes
+  FROM
+    gestion_carrera_universitaria.tblcarrera
+  WHERE
+    gestion_carrera_universitaria.tblcarrera.PK_Carrera_Id = param_CarreraId;
+END;
+$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE DEFINER=CURRENT_USER PROCEDURE `PROCEDURE_CARRERA_INSTANCIA_EVALUATIVA_CREAR`(
 	IN param_CarreraId int UNSIGNED,
 	IN param_Nombre varchar(64),
@@ -220,13 +246,15 @@ CREATE DEFINER=CURRENT_USER PROCEDURE `PROCEDURE_CARRERA_INSTANCIA_EVALUATIVA_CR
 	IN param_InscripcionEn2A bool,
 	IN param_InscripcionEn2B bool,
 	IN param_InscripcionCuatrimestreMinimo int UNSIGNED,
-	IN param_Correlativas JSON
+	IN param_Correlativas JSON,
+  OUT outparam_NewId int UNSIGNED
 )
 BEGIN
   DECLARE var_InstanciaEvaluativaId int UNSIGNED;
   DECLARE var_CorrelativaId int UNSIGNED;
 	INSERT INTO `gestion_carrera_universitaria`.`tblinstancia` (FK_Instancia_Carrera, UQ_Instancia_Nombre, DF_Instancia_InscripcionEnV, DF_Instancia_InscripcionEn1A, DF_Instancia_InscripcionEn1B, DF_Instancia_InscripcionEn2A, DF_Instancia_InscripcionEn2B, DF_Instancia_InscripcionCuatrimestreMinimo) VALUES (param_CarreraId, param_Nombre, param_InscripcionEnV, param_InscripcionEn1A, param_InscripcionEn1B, param_InscripcionEn2A, param_InscripcionEn2B, param_InscripcionCuatrimestreMinimo);
   SET var_InstanciaEvaluativaId = LAST_INSERT_ID();
+  SET outparam_NewId = LAST_INSERT_ID();
 
   WHILE JSON_LENGTH(param_Correlativas) > 0 DO
     SET var_CorrelativaId = JSON_UNQUOTE(JSON_EXTRACT(param_Correlativas, '$[0]'));
@@ -253,7 +281,8 @@ CREATE DEFINER=CURRENT_USER PROCEDURE `PROCEDURE_CARRERA_MATERIA_CREAR`(
   IN param_CuatrimestreEnCarrera int UNSIGNED,
   IN param_GastaCupo bool,
   IN param_Creditos int UNSIGNED,
-  IN param_Correlativas JSON
+  IN param_Correlativas JSON,
+  OUT outparam_NewId int UNSIGNED
 )
 BEGIN
   DECLARE var_MateriaId int UNSIGNED;
@@ -271,6 +300,7 @@ BEGIN
 
   INSERT INTO `gestion_carrera_universitaria`.`tblinstancia` (FK_Instancia_Carrera, UQ_Instancia_Nombre, DF_Instancia_InscripcionEnV, DF_Instancia_InscripcionEn1A, DF_Instancia_InscripcionEn1B, DF_Instancia_InscripcionEn2A, DF_Instancia_InscripcionEn2B, DF_Instancia_InscripcionCuatrimestreMinimo) VALUES (param_CarreraId, param_Nombre, param_InscripcionEnV, param_InscripcionEn1A, param_InscripcionEn1B, param_InscripcionEn2A, param_InscripcionEn2B, param_InscripcionCuatrimestreMinimo);
   SET var_MateriaId = LAST_INSERT_ID();
+  SET outparam_NewId = LAST_INSERT_ID();
 
   INSERT INTO `gestion_carrera_universitaria`.`tblmateria` (PK_Materia_Instancia, DF_Materia_Tipologia, DF_Materia_CuatrimestreEnCarrera, DF_Materia_GastaCupo, DF_Materia_Creditos) VALUES (var_MateriaId, param_Tipologia, param_CuatrimestreEnCarrera, param_GastaCupo, param_Creditos);
 
@@ -308,7 +338,7 @@ BEGIN
     gestion_carrera_universitaria.tblinstancia AS instancias
     LEFT JOIN gestion_carrera_universitaria.tblmateria AS materias ON instancias.PK_Instancia_Id = materias.PK_Materia_Instancia
   WHERE
-    instancias.FK_Instancia_Carrera = 1;
+    instancias.FK_Instancia_Carrera = param_CarreraId;
 END;
 $$
 DELIMITER ;
@@ -495,7 +525,7 @@ BEGIN
     gestion_carrera_universitaria.tblinstancia AS instancias
     LEFT JOIN gestion_carrera_universitaria.tblmateria AS materias ON instancias.PK_Instancia_Id = materias.PK_Materia_Instancia
   WHERE
-    instancias.FK_Instancia_Carrera = 1;
+    instancias.FK_Instancia_Carrera = param_CarreraEstudianteId;
 END;
 $$
 DELIMITER ;
