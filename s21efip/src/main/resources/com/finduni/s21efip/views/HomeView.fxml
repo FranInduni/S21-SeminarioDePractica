@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.finduni.s21efip.exposers.ExposingHome">
+   <children>
+      <Button fx:id="btnNuevoPerfil" layoutX="356.0" layoutY="33.0" mnemonicParsing="false" onAction="#nuevoPerfil" prefHeight="46.0" prefWidth="175.0" text="Nuevo Perfil">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnAdministrarCarreras" layoutX="682.0" layoutY="33.0" mnemonicParsing="false" onAction="#administrarCarreras" prefHeight="46.0" prefWidth="195.0" text="Administrar Carreras">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <ListView fx:id="listPerfiles" layoutX="357.0" layoutY="86.0" prefHeight="585.0" prefWidth="520.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="60.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.finduni.s21efip.exposers.ExposingAdministrarCarrerasInfoCarrera">
+   <children>
+      <Text fx:id="txtNombre" layoutX="14.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Label fx:id="labelModalidad" layoutX="872.0" layoutY="12.0" style="-fx-border-color: black; -fx-border-radius: 20px;" text="Modalidad" textAlignment="RIGHT" textFill="#7c7c7c" AnchorPane.rightAnchor="161.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </Label>
+      <Button fx:id="btnBorrar" layoutX="1083.0" layoutY="11.0" mnemonicParsing="false" onAction="#borrarCarrera" text="Borrar">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
