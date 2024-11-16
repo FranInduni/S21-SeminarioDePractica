@@ -549,6 +549,9 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La carrera debe tener un valor no nulo en CuposSoloEnB "B"';
     END IF;
   END IF;
+  IF NEW.UQ_Carrera_Nombre = "test" THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Las carrera no se puede llamar "test"';
+  END IF;
 END;
 $$
 DELIMITER ;
@@ -566,6 +569,9 @@ BEGIN
     IF NEW.DF_Carrera_CuposSoloEnB IS NULL THEN
       SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La carrera debe tener un valor no nulo en CuposSoloEnB "B"';
     END IF;
+  END IF;
+  IF NEW.UQ_Carrera_Nombre = "test" THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Las carrera no se puede llamar "test"';
   END IF;
 END;
 $$
