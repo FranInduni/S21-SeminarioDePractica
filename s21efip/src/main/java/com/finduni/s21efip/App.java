@@ -103,6 +103,18 @@ public class App extends Application {
     }
     
     /*
+    * Muestra en la ventana principal la vista CrearCarrera
+    */
+    public static void goToCrearCarrera() {
+        try {
+            changeScene("views/CrearCarreraView");
+        } catch (IOException e) {
+            System.out.println("Error al cambiar de escena a Crear Carrera: " + e);
+            fatalError();
+        }
+    }
+    
+    /*
     * Muestra en la ventana principal un mensaje de error fatal. Esta vista solo muestra el mensaje y la única opción disponible es cerrar el programa
     */
     public static void fatalError() {

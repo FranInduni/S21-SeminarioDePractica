@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.finduni.s21efip.exposers.ExposingCrearCarrera">
+   <children>
+      <TextArea disable="true" editable="false" layoutX="295.0" layoutY="180.0" prefHeight="391.0" prefWidth="690.0" text="Acá irán la lista de materias e instancias evaluativas creadas&#10;con la opción de crear nuevas o editarlas :)&#10;En este prototipo al crear la carrera genera una materia e instancia&#10;evaluativa dentro de esa carrera automáticamente">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </TextArea>
+      <Text layoutX="583.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crear carrera">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <TextField fx:id="inputNombre" layoutX="295.0" layoutY="67.0" prefHeight="25.0" prefWidth="331.0" promptText="Nombre" />
+      <ComboBox fx:id="inputModalidad" layoutX="652.0" layoutY="67.0" prefWidth="150.0" promptText="Modalidad" />
+      <TextField fx:id="inputCreditos" layoutX="837.0" layoutY="67.0" promptText="Créditos" />
+      <TextField fx:id="inputCuposNormal" layoutX="295.0" layoutY="118.0" promptText="Cupos normal" />
+      <TextField fx:id="inputCuposSubperiodoB" layoutX="478.0" layoutY="118.0" promptText="Cupos subperíodo &quot;B&quot;" />
+      <TextField fx:id="inputCuposIngresantes" layoutX="657.0" layoutY="118.0" promptText="Cupos ingresantes" />
+      <TextField fx:id="inputCuposVerano" layoutX="837.0" layoutY="118.0" promptText="Cupos verano" />
+      <Button fx:id="btnGuardar" defaultButton="true" layoutX="568.0" layoutY="657.0" mnemonicParsing="false" onAction="#guardarCarrera" text="Guardar" />
+      <Button fx:id="btnCancelar" cancelButton="true" layoutX="665.0" layoutY="657.0" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+      <ImageView fitHeight="241.0" fitWidth="385.0" layoutX="471.0" layoutY="321.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../mike.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

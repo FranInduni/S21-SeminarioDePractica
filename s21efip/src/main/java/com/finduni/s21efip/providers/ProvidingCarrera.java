@@ -31,7 +31,7 @@ public class ProvidingCarrera {
     * Crea y persiste una carrera dado sus atributos. Devuelve la carrera ya con el ID obtenido de la DB.
     */
     public Carrera crearYGuardarCarrera(String nombre, Modalidad modalidad, Integer creditosElectivas, Integer cuposVerano, Integer cuposNormal, Integer cuposSoloEnB, Integer cuposIngresantes, ArrayList<Instancia> instancias) throws InvalidOrNullParam, Exception {
-        if (modalidad == Modalidad.PH || modalidad == Modalidad.ED || modalidad == Modalidad.EDH && cuposSoloEnB == null) {
+        if ((modalidad == Modalidad.PH || modalidad == Modalidad.ED || modalidad == Modalidad.EDH) && cuposSoloEnB == null) {
             throw new InvalidOrNullParam("cuposSoloEnB no puede ser nulo para la modalidad seleccionada");
         }
         if (modalidad == Modalidad.MP) {
@@ -39,7 +39,7 @@ public class ProvidingCarrera {
         }
         
         for (Instancia instancia : instancias) {
-            if (modalidad == Modalidad.PH) {
+            if (modalidad == Modalidad.MP) {
                 instancia.setInscripcionEn1B(null);
                 instancia.setInscripcionEn2B(null);
             }
